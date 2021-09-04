@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.websocket.SendResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +45,13 @@ public class Productcontroller {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/products/serialize/{id}",method = RequestMethod.GET)
+	@Transactional(readOnly = true)
+	@Cacheable("product-cache")
+	public Product getSerializableProduct(@PathVariable("id") int id) {
+		return service.getProduct(id);
+	}
+	
 	@RequestMapping(value = "/addproduct",method = RequestMethod.GET)
 	public ModelAndView getProductForm() {
 		ModelAndView mav = new ModelAndView("AddProduct");
@@ -65,6 +74,7 @@ public class Productcontroller {
 		return service.updateProduct(product);
 	}
 	
+	@CacheEvict("product-cache")
 	@RequestMapping(value = "/products/{id}",method = RequestMethod.DELETE)
 	public void deleteProduct(@PathVariable("id") int id) {
 		service.deleteProduct(id);

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.example.demo.entities.Product;
@@ -14,6 +15,7 @@ import com.example.demo.services.ProductService;
 
 @SpringBootApplication
 @EnableJpaRepositories
+@EnableCaching
 public class FirstspringProjectApplication implements CommandLineRunner {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -35,7 +37,7 @@ public class FirstspringProjectApplication implements CommandLineRunner {
 //		pr.setPrice(12313);
 //		repo.save(pr);
 		
-		logger.info("All products are {}",service.getProducts());
+//		logger.info("All products are {}",service.getProducts());
 		
 	}
 

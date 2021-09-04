@@ -17,10 +17,10 @@ class ProductTest {
 	private String baseUrl;
 	
 	@Test
-	void testGetProducts() {
+	void testGetProduct() {
 		System.out.println(baseUrl);
 		RestTemplate restTemplate = new RestTemplate();
-		Product forObject = restTemplate.getForObject(baseUrl+"1", Product.class);
+		Product forObject = restTemplate.getForObject(baseUrl+"serialize/1", Product.class);
 		assertNotNull(forObject);
 		assertEquals("dasdsad", forObject.getName());
 	}
