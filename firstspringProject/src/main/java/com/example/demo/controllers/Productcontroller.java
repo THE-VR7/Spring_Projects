@@ -37,6 +37,12 @@ public class Productcontroller {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/allproducts",method = RequestMethod.GET)
+	public List<Product> findAll(){
+		List<Product> products = service.getProducts();
+		return products;
+	}
+	
 	@RequestMapping(value = "/products/{id}",method = RequestMethod.GET)
 	public ModelAndView getProduct(@PathVariable("id") int id) {
 		ModelAndView mav = new ModelAndView("product");
@@ -66,6 +72,12 @@ public class Productcontroller {
 		System.out.println(product);
 		service.createProduct(product);
 		res.sendRedirect("http://localhost:8080/products");
+	}
+	
+	@RequestMapping(value = "/saveproduct1",method = RequestMethod.POST)
+	public Product createProduct1(@ModelAttribute Product product,HttpServletResponse res) throws IOException {
+		System.out.println(product);
+		return service.createProduct(product);
 	}
 	
 	@Transactional

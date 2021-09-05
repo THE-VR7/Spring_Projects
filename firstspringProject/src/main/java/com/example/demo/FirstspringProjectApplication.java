@@ -14,8 +14,7 @@ import com.example.demo.repos.ProductRepository;
 import com.example.demo.services.ProductService;
 
 @SpringBootApplication
-@EnableJpaRepositories
-@EnableCaching
+//@EnableCaching
 public class FirstspringProjectApplication implements CommandLineRunner {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
