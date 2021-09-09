@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import javax.websocket.SendResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +24,8 @@ import com.example.demo.entities.Product;
 import com.example.demo.repos.ProductRepository;
 import com.example.demo.services.ProductService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 public class Productcontroller {
 
@@ -29,6 +33,12 @@ public class Productcontroller {
 	ProductService service;
 	private Product product;
 	
+	@ApiOperation(value = "Retrives all the products",
+			notes = "A list of products",
+			response = Product.class,
+			responseContainer = "List",
+			produces = "application/json"
+			)
 	@RequestMapping(value = "/products",method = RequestMethod.GET)
 	public ModelAndView getProducts(){
 		ModelAndView mav = new ModelAndView("products");
@@ -75,7 +85,7 @@ public class Productcontroller {
 	}
 	
 	@RequestMapping(value = "/saveproduct1",method = RequestMethod.POST)
-	public Product createProduct1(@ModelAttribute Product product,HttpServletResponse res) throws IOException {
+	public Product createProduct1(@Valid @ModelAttribute Product product,HttpServletResponse res) throws IOException {
 		System.out.println(product);
 		return service.createProduct(product);
 	}
