@@ -1,0 +1,32 @@
+Create the following APIs:
+
+ 
+
+/register - POST - Takes 3 form parameters ("full name", "email", "password") and registers the user in the database. Use Data Transfer Object (DTO) to send data to the controller.
+/login - POST - Takes 2 form parameters  ("email", "password") and returns the user's JWT ("data" key genericSuccess(Object data)). Use the hawk class provided in the util package.
+ 
+
+Authenticating URLs 
+
+ 
+
+To access the following URLs, JWTs are required. Pass the JWT in the header as a bearer token.
+
+ 
+
+/api/publish - POST- Checks the received blog post's DTO and saves it in the database.
+
+/api/getPost - GET - Returns all the posts in the blog (returns the data as a genericSuccess(Object data) object with "data" keyword as the key).
+
+/api/getPostCount - GET - Returns the count of the number of posts in the blog ("data" key genericSuccess(Object data)).
+/api/getPostByUser/{userId} - GET - Returns all the posts published by a particular user.
+/api/updatePost - POST - Checks the received DTO for inputs and ensures that a post is updated only by the author of the post. Users cannot update posts authored by others.
+/api/getPost/{postID} - GET - Returns a post as per the post ID specified.
+/api/deletePost/{postID} - GET - Deletes a post as per the post ID specified. Users cannot delete posts authored by others.
+ 
+
+Notes: 
+
+Use the DTO provided to handle the data flow in the application and to return the response of all the controllers.
+Use the EntitiyHawk class provided in the util package.
+Use H2 database.
