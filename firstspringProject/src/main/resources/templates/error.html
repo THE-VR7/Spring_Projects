@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<meta charset="ISO-8859-1">
+<title>Error Page</title>
+</head>
+<body>
+Error Details are :<br>
+Message : <b th:text="${error}"></b><br>
+
+<a th:href="@{/products}"> Go to the Products Home Page</a>
+</body>
+</html>

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.entities.Product;
+import com.example.demo.exceptions.ProductNotFound;
 import com.example.demo.repos.ProductRepository;
 
 @Service
@@ -20,8 +21,15 @@ public class ProductService {
 		return (List<Product>) repository.findAll();
 	}
 	
-	public Product getProduct(int id) {
-		return repository.findById(id).get();
+	public Product getProduct(int id) throws ProductNotFound {
+		Product product;
+		try {
+			product = repository.findById(id).get();
+		}
+		catch(Exception e) {
+			throw new ProductNotFound("No available Product is there with given Id");
+		}
+		return product;
 	}
 	
 	public Product createProduct(Product product) {

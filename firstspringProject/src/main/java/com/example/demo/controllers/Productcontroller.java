@@ -10,6 +10,7 @@ import javax.websocket.SendResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entities.Product;
+import com.example.demo.exceptions.ProductNotFound;
 import com.example.demo.repos.ProductRepository;
 import com.example.demo.services.ProductService;
 
@@ -55,18 +58,26 @@ public class Productcontroller {
 	
 	@RequestMapping(value = "/products/{id}",method = RequestMethod.GET)
 	public ModelAndView getProduct(@PathVariable("id") int id) {
-		ModelAndView mav = new ModelAndView("product");
-		Product product = service.getProduct(id);
-		mav.addObject("product", product);
+		ModelAndView mav;
+		Product product;
+		try {
+			mav = new ModelAndView("product");
+			product = service.getProduct(id);
+			mav.addObject("product", product);
+		} catch (ProductNotFound e) {
+		System.out.println("error message is " + e);
+		mav = new ModelAndView("error");
+		mav.addObject("error",e.getMessage());
+		}
 		return mav;
 	}
 	
-	@RequestMapping(value = "/products/serialize/{id}",method = RequestMethod.GET)
-	@Transactional(readOnly = true)
-	@Cacheable("product-cache")
-	public Product getSerializableProduct(@PathVariable("id") int id) {
-		return service.getProduct(id);
-	}
+//	@RequestMapping(value = "/products/serialize/{id}",method = RequestMethod.GET)
+//	@Transactional(readOnly = true)
+//	@Cacheable("product-cache")
+//	public Product getSerializableProduct(@PathVariable("id") int id) {
+//		return service.getProduct(id);
+//	}
 	
 	@RequestMapping(value = "/addproduct",method = RequestMethod.GET)
 	public ModelAndView getProductForm() {
