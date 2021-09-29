@@ -65,7 +65,6 @@ public class Productcontroller {
 			product = service.getProduct(id);
 			mav.addObject("product", product);
 		} catch (ProductNotFound e) {
-		System.out.println("error message is " + e);
 		mav = new ModelAndView("error");
 		mav.addObject("error",e.getMessage());
 		}
@@ -89,27 +88,50 @@ public class Productcontroller {
 	
 	@Transactional
 	@RequestMapping(value = "/saveproduct",method = RequestMethod.POST)
-	public void createProduct(@ModelAttribute Product product,HttpServletResponse res) throws IOException {
-		System.out.println(product);
-		service.createProduct(product);
-		res.sendRedirect("http://localhost:8080/products");
+	public ModelAndView createProduct(@ModelAttribute Product product,HttpServletResponse res) throws IOException {
+		try {
+			Product pr = service.createProduct(product);
+			return getProduct(pr.getId());
+		} catch (ProductNotFound e) {
+			ModelAndView mav = new ModelAndView("error");
+			mav.addObject("error",e.getMessage());
+			return mav;	
+			}
 	}
 	
 	@RequestMapping(value = "/saveproduct1",method = RequestMethod.POST)
 	public Product createProduct1(@Valid @ModelAttribute Product product,HttpServletResponse res) throws IOException {
 		System.out.println(product);
-		return service.createProduct(product);
+		try {
+			return service.createProduct(product);
+		} catch (ProductNotFound e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Transactional
 	@RequestMapping(value = "/products/",method = RequestMethod.PUT)
 	public Product updateProduct(@RequestBody Product product) {
-		return service.updateProduct(product);
+		try {
+			return service.updateProduct(product);
+		} catch (ProductNotFound e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@CacheEvict("product-cache")
 	@RequestMapping(value = "/products/{id}",method = RequestMethod.DELETE)
-	public void deleteProduct(@PathVariable("id") int id) {
-		service.deleteProduct(id);
+	public ModelAndView deleteProduct(@PathVariable("id") int id) {
+		ModelAndView mav;
+		try {
+			service.deleteProduct(id);
+			return getProducts();
+		} catch (ProductNotFound e) {
+			mav = new ModelAndView("error");
+			mav.addObject("error",e.getMessage());
+			return mav;
+		}
 	}
 }

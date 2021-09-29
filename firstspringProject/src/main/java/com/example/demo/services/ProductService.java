@@ -32,15 +32,34 @@ public class ProductService {
 		return product;
 	}
 	
-	public Product createProduct(Product product) {
-		return repository.save(product);
+	public Product createProduct(Product product) throws ProductNotFound {
+		Product product2;
+		try {
+			product2 = repository.save(product);
+		}
+		catch(Exception e) {
+			throw new ProductNotFound("Sorry! Can not Create a Product.");
+		}
+		return product2;
 	}
 	
-	public Product updateProduct(Product product) {
-		return repository.save(product);
+	public Product updateProduct(Product product) throws ProductNotFound {
+		Product product2;
+		try {
+			product2 = repository.save(product);
+		}
+		catch(Exception e) {
+			throw new ProductNotFound("Sorry! Can not Update the Product.");
+		}
+		return product2;
 	}
 	
-	public void deleteProduct(int id) {
-		repository.deleteById(id);
+	public void deleteProduct(int id) throws ProductNotFound {
+		try {
+			repository.deleteById(id);
+			}
+		catch(Exception e) {
+			throw new ProductNotFound("Sorry! Can not Delete the Product.");
+		}
 	}
 }
