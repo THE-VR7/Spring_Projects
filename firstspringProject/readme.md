@@ -13,3 +13,5 @@ Implented Unit Testing of the controllers, services in the project using the moc
 Used the Mysql databse and used JPA ORM with hibernate implementation to perform CRUD operations on the database
 
 Integrated the Swagger  framework and also usde the actuator dependency to know about the dynamics of the project
+
+Implemented the Exception Handling in the controller and service layer to display error page using Thymeleaf
