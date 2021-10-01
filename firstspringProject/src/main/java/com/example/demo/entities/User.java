@@ -1,9 +1,12 @@
 package com.example.demo.entities;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -95,6 +98,20 @@ public class User {
 	
 	@Column(name="SSN", length = 50, nullable = false,unique = true)
 	private String ssn;
+	
+//	Hibernate: alter table orders add constraint FKel9kyl84ego2otj2accfd8mr7 foreign key (user_id) references user (id)
+	// this is done so that order knows about the foreign key, it is user id in order
+	@OneToMany(mappedBy = "user")
+	private List<Order> orders;
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+	
 	
 	
 	
