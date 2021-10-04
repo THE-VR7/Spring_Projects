@@ -1,21 +1,23 @@
 package com.example.demo;
 
+
+import java.util.Locale;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+import org.springframework.web.servlet.LocaleResolver;
 
-import com.example.demo.entities.Product;
-import com.example.demo.repos.ProductRepository;
+
 import com.example.demo.services.ProductService;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 @SpringBootApplication
 @EnableSwagger2
@@ -43,6 +45,20 @@ public class FirstspringProjectApplication implements CommandLineRunner {
 		
 //		logger.info("All products are {}",service.getProducts());
 		
+	}
+	
+	@Bean
+	public LocaleResolver localResolver() {
+		AcceptHeaderLocaleResolver localResolver = new AcceptHeaderLocaleResolver();
+		localResolver.setDefaultLocale(Locale.US);
+		return localResolver;
+	}
+
+	@Bean
+	public ResourceBundleMessageSource messageSource() {
+		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+		messageSource.setBasename("message");
+		return messageSource;
 	}
 
 }
