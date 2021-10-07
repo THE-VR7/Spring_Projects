@@ -35,15 +35,19 @@ public class User extends RepresentationModel<User> {
 	@Column(name="FIRST_NAME", length = 50, nullable = false)
 	@JsonView(Views.External.class)
 	private String firstname;
-	
+
 	@Override
 	public String toString() {
 		return "User [Id=" + Id + ", username=" + username + ", firstname=" + firstname + ", lastname=" + lastname
-				+ ", email=" + email + ", role=" + role + ", ssn=" + ssn + "]";
+				+ ", email=" + email + ", role=" + role + ", ssn=" + ssn + ", orders=" + orders + ", address=" + address
+				+ "]";
 	}
 
 	public Long getId() {
 		return Id;
+	}
+
+	public User() {
 	}
 
 	public void setId(Long id) {
@@ -119,6 +123,32 @@ public class User extends RepresentationModel<User> {
 	@OneToMany(mappedBy = "user")
 	@JsonView(Views.Internal.class)
 	private List<Order> orders;
+	
+	@Column(name = "Address")
+	private String address;
+
+	public User(Long id, @NotEmpty(message = "Username is a mandatory field. It can't be left empty") String username,
+			@Size(min = 2, message = "FirstName should have atleast 2 characters") String firstname, String lastname,
+			String email, String role, String ssn, List<Order> orders, String address) {
+		super();
+		Id = id;
+		this.username = username;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.role = role;
+		this.ssn = ssn;
+		this.orders = orders;
+		this.address = address;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public List<Order> getOrders() {
 		return orders;
